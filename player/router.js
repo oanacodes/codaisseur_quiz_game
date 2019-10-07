@@ -1,5 +1,6 @@
 const { Router } = require('express')
 const Player = require('./model')
+const {toJWT} = require('./jwt')
 const bcrypt = require('bcrypt')
 
 const router = new Router()
@@ -7,6 +8,7 @@ const router = new Router()
 // created signup endpoing
 router.post('/signup', (req, res, next) => {
   const player = {
+    name: req.body.name,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 10)
   }
@@ -27,24 +29,24 @@ router.post('/login', (req,res) => {
       })
   }
   else{
-      User.findOne({
+      Player.findOne({
           where:{
               email: req.body.email
           }
       })
-      .then(user => {
-          if(!user){
+      .then(player => {
+          if(!player){
               res.status(400).send({
                   message: 'User with that email dosenot exist'
               })
           }
-          else if(bcrypt.compareSync(password, user.password)){
+          else if(bcrypt.compareSync(password, player.password)){
               res.send({
-                  jwt: toJWT({userId: user.id})
+                  jwt: toJWT({playerId: player.id})
               })
           }
           else{
-              res.statsu(400).send({
+              res.status(400).send({
                   message: 'Password was incorrect'
               })
           }
@@ -56,12 +58,6 @@ router.post('/login', (req,res) => {
           })
       })
   }
-})
-// add back auth
-router.get('/secret-endpoint', (req, res) => {
-  res.send({
-      message: "Thanks for visiting the secret endpoint ${req.user.email}"
-  })
 })
 
 module.exports = router
