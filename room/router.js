@@ -1,20 +1,20 @@
 const { Router } = require('express')
-const Lobby = require('./model')
+const Room = require('./model')
 const auth = require('../auth/middleware')
 
 const router = new Router()
 
-router.get('/lobby', (req, res, next) => {
-  Lobby.findAll()
-      .then((lobbies) => {
-        return res.status(200).send(lobbies)
+router.get('/room', (req, res, next) => {
+  Room.findAll()
+      .then((rooms) => {
+        return res.status(200).send(rooms)
       })
       .catch(next)
 })
 
-router.post('/lobby', (req, res, next) => {
-  Lobby.create(req.body)
-    .then(lobby => res.send(lobby))
+router.post('/room', (req, res, next) => {
+  Room.create(req.body)
+    .then(room => res.send(room))
     .catch(next)
 })
 
