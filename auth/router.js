@@ -38,12 +38,14 @@ router.post('/login', (req,res) => {
       .then(player => {
           if(!player){
               res.status(400).send({
-                  message: 'User with that email dosenot exist'
+                  message: 'User with that email does not exist'
               })
           }
           else if(bcrypt.compareSync(password, player.password)){
               res.send({
                   jwt: toJWT({playerId: player.id})
+                  // playerId: player.id,
+                  // name: player.name
               })
           }
           else{

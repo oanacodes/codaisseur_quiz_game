@@ -9,9 +9,11 @@ const categoryRouter = require('./category/router')
 const gameRouter = require('./game/router')
 const roomRouter = require('./room/router')
 const reactRouter = require('./react/router')
+const Sse = require('json-sse')
 
 const app = express()
 const port = process.env.PORT || 4050
+const stream = new Sse()
 
 app.listen(port, () => console.log(`I'm listening on ${port}`))
 
