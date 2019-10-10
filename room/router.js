@@ -3,7 +3,7 @@ const Room = require('./model')
 const Player = require('../player/model')
 const auth = require('../auth/middleware')
 const {toData} = require('../auth/jwt')
-const jwt = require('../auth/jwt')
+const Game = require('../game/model')
 
 const router = new Router()
 
@@ -13,6 +13,18 @@ router.get('/room', (req, res, next) => {
         return res.status(200).send(rooms)
       })
       .catch(next)
+})
+
+router.get('/room/:id', (req, res, next) => {
+  Room.findByPk(req.params.id)
+    .then(result => {
+      if (result) {
+        res.status(200).send(result)
+      } else {
+        res.status(404).end()
+      }
+    })
+    .catch(next)
 })
 
 router.post('/room', (req, res, next) => {
@@ -35,33 +47,49 @@ router.put('/room/:id', auth, (req, res, next) => {
   if (auth && auth[0] === 'Bearer' && auth[1]) {
     const dataFromToData = toData(auth[1])
     // console.log("data from toData", dataFromToData)
-    function getPlayerId (data) {
-      const {playerId} = dataFromToData;
-      console.log("PlayerId is", playerId)
-      return playerId
-    }
-    getPlayerId(dataFromToData)
+    const pId = dataFromToData.playerId;
+    console.log('New id var:', pId);
 
     Room.findByPk(req.params.id)
     .then(foundRoom => {
-      // console.log("what is room", foundRoom.dataValues)
+      console.log("what is room", foundRoom.dataValues)
       // console.log("Room id from React", req.params.id)
       if (foundRoom.player1_id === null) {
         // store player1 ID
         foundRoom.update({
-          player1_id: getPlayerId(dataFromToData),
+          player1_id: pId,
           status: "Waiting",
         })
       } else {
         // store player2 ID
         foundRoom.update({
-          player2_id: 888,
+          player2_id: pId,
           status: "Playing"
         })  
-      console.log("got a player ID", foundRoom.player1_id)
       }
-      console.log("got a player ID", "hello2")
     })
+
+
+
+    // Game.findByPk(req.params.id)
+    //   .then(foundgame => {
+    //     console.log("what is room", foundGame.dataValues)
+    //     // console.log("Room id from React", req.params.id)
+    //     if (foundGame.player1_id === null) {
+    //       // store player1 ID
+    //       foundRoom.update({
+    //         player1_id: pId,
+    //         status: "Waiting",
+    //       })
+    //     } else {
+    //       // store player2 ID
+    //       foundRoom.update({
+    //         player2_id: pId,
+    //         status: "Playing"
+    //       })  
+    //     }
+    //   })
+    // })
     .catch(next)
   }
 })
@@ -74,5 +102,8 @@ router.put('/room/:id', auth, (req, res, next) => {
 // router.post('/playerjoin', (req, res, next) => {
 //   Room.FindByPk
 // })
+
+Room.belongsTo(Game)
+Game.hasMany(Room)
 
 module.exports = router

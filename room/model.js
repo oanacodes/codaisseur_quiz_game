@@ -7,10 +7,6 @@ const Room = db.define('room', {
     type: Sequelize.STRING,
     allowNull: false
   },
-  category_id: {
-    type: Sequelize.INTEGER,
-    allowNull: true
-  },
   status: {
     type: Sequelize.STRING,
     allowNull: false
@@ -27,8 +23,5 @@ const Room = db.define('room', {
   timestamps: false,
   tableName: 'room'
 })
-
-Player.belongsTo(Room)
-Room.hasMany(Player)
 
 module.exports = Room

@@ -2,29 +2,34 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const Game = db.define('game', {
-  room_id: {
+  player1_id: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: true
   },
-  category_id: {
+  player2_id: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: true
   },
-  question_id: {
+  player1_questionId: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: true
   },
-  player_id: {
+  player2_questionId: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: true
   },
-  score: {
+  player1_score: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: true
+  },
+  player2_score: {
+    type: Sequelize.INTEGER,
+    allowNull: true
   },
 }, {
   timestamps: false,
   tableName: 'game'
 })
+
 
 module.exports = Game

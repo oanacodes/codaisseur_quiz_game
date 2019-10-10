@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const Game = require('./model')
 const auth = require('../auth/middleware')
+const Room = require('../room/model')
 
 const router = new Router()
 
@@ -30,10 +31,5 @@ router.put('/game/:id', (req, res, next) => {
     })
     .catch(next)
 })
-
-
-// Authentification front end
-// superagent.get('local/game')
-//   .set('authorization', `Bearer ${jwt}`)
 
 module.exports = router
