@@ -1,11 +1,7 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 
-const React = db.define('react', {
-  category_id: {
-    type: Sequelize.INTEGER,
-    allowNull: false
-  },
+const Questions = db.define('questions', {
   question: {
     type: Sequelize.STRING,
     allowNull: false
@@ -28,7 +24,7 @@ const React = db.define('react', {
   },
 }, {
   timestamps: false,
-  tableName: 'react'
+  tableName: 'questions'
 })
 
-module.exports = React
+module.exports = Questions

@@ -68,40 +68,9 @@ router.put('/room/:id', auth, (req, res, next) => {
         })  
       }
     })
-
-
-
-    // Game.findByPk(req.params.id)
-    //   .then(foundgame => {
-    //     console.log("what is room", foundGame.dataValues)
-    //     // console.log("Room id from React", req.params.id)
-    //     if (foundGame.player1_id === null) {
-    //       // store player1 ID
-    //       foundRoom.update({
-    //         player1_id: pId,
-    //         status: "Waiting",
-    //       })
-    //     } else {
-    //       // store player2 ID
-    //       foundRoom.update({
-    //         player2_id: pId,
-    //         status: "Playing"
-    //       })  
-    //     }
-    //   })
-    // })
     .catch(next)
   }
 })
-
-
-
-// create const with toData, destructure and get playerID 
-// get player1 and player 2 ids update automatically
-
-// router.post('/playerjoin', (req, res, next) => {
-//   Room.FindByPk
-// })
 
 Room.belongsTo(Game)
 Game.hasMany(Room)
